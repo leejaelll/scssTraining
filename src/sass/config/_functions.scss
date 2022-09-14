@@ -1,0 +1,39 @@
+@use "sass:math";
+@use "sass:meta";
+
+// -------------------------------------------------------------------------
+//  remove-unit()
+@function remove-unit($unit) {
+  @return math.div($unit, $unit * 0 + 1);
+}
+
+// -------------------------------------------------------------------------
+// rem(), em()
+//  px -> rem 값 변경 함수
+// rem(25px, 10px) -> 1.5rem return
+// 25 / 10 = 2.5rem -> 나누기 Math.div, 단위를 없애는 함수 필요
+@function rem($unit, $base: 16) {
+  @return math.div(remove-unit($unit), remove-unit($base)) * 1rem;
+}
+
+@function em($unit, $base: 16) {
+  @return math.div(remove-unit($unit), remove-unit($base)) * 1em;
+}
+
+// -------------------------------------------------------------------------
+//  unitless-px()
+// px단위가 없는 값에 px을 붙여주는 함수
+@function unitless-px($value) {
+  @return if(
+    math.is-unitless($value),
+    if($value != 0, $value * 1px, $value),
+    $value
+  );
+}
+
+// -------------------------------------------------------------------------
+// get-number-or-string()
+// 값 유형 분석 후 숫자 또는 문자 값 반환 유틸리티 함수
+@function get-number-or-string($value) {
+  @return if(meta.type-of($value) == "number", unitless-px($value), $value);
+}

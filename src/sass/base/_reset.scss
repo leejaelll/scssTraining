@@ -1,0 +1,13 @@
+%reset-box-model {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+}
+
+body {
+  &::before,
+  &::after {
+    @extend %reset-box-model;
+  }
+}
